@@ -48,14 +48,13 @@ const SignUp = () => {
             lastName: formData.lastName,
             email: formData.email,
             password: formData.password,
-            role: 'patient', // Default role for signup
+            role: 'patient',
           }),
         });
         if (response.ok) {
           navigate('/login');
         } else {
           const errorData = await response.json();
-          console.log('Error data:', errorData); // Add this line to log the error data
           setErrors({ ...errors, submit: errorData.error });
         }
       } catch (error) {
@@ -66,8 +65,8 @@ const SignUp = () => {
 
   return (
     <div className="container mx-auto bg-blue-50 min-h-screen flex items-center justify-center max-w-full">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg">
-        <div className="bg-blue-600 text-white rounded-t-lg p-6">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl transform transition duration-300 hover:scale-105 hover:rotate-[0.5deg] animate-fadeIn">
+        <div className="bg-blue-600 text-white rounded-t-2xl p-6">
           <h2 className="text-2xl font-bold text-center">Sign Up as a Patient</h2>
           <p className="text-center text-blue-100">Create your account to access health services</p>
         </div>
@@ -126,7 +125,7 @@ const SignUp = () => {
                 />
                 <button 
                   type="button" 
-                  className="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none focus:shadow-outline"
+                  className="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff /> : <Eye />}
@@ -148,7 +147,7 @@ const SignUp = () => {
                 />
                 <button 
                   type="button" 
-                  className="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none focus:shadow-outline"
+                  className="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? <EyeOff /> : <Eye />}
@@ -158,22 +157,33 @@ const SignUp = () => {
             </div>
             <button 
               type="submit" 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="w-full bg-blue-600 hover:bg-blue-700 transition-transform duration-200 hover:scale-105 text-white font-bold py-2 px-4 rounded focus:outline-none"
             >
               Create Account
             </button>
           </form>
         </div>
-        <div className="bg-blue-50 px-6 py-4 rounded-b-lg">
+        <div className="bg-blue-50 px-6 py-4 rounded-b-2xl">
           <p className="text-sm text-blue-600 text-center">
             Already have an account?{" "}
             <button onClick={() => navigate('/login')} className="text-blue-600 font-semibold hover:underline">
               Log in
             </button>
           </p>
-          {errors.submit && <p className="text-red-500 text-xs mt-1">{errors.submit}</p>}
+          {errors.submit && <p className="text-red-500 text-xs mt-1 text-center">{errors.submit}</p>}
         </div>
       </div>
+
+      {/* Custom animation styles */}
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.6s ease-in-out;
+        }
+      `}</style>
     </div>
   );
 };

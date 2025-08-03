@@ -1,28 +1,31 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Admin = require('./models/Admin');
+const Admin = require('./models/Admin'); // uses the schema you pasted
 
-mongoose.connect('<your_MongoDB_connection_string>', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch((err) => console.error('Could not connect to MongoDB', err));
+.then(() => console.log('✅ Connected to MongoDB'))
+.catch((err) => {
+  console.error('❌ MongoDB connection error:', err);
+  process.exit(1);
+});
 
 async function createAdmin() {
-  const admin = new Admin({
-    firstName: "abc",
-    lastName: "xyz",
-    email: "abc@gmail.com",
-    password: "xyz123", 
-    role: "admin"
-  });
-
   try {
-    await admin.save();
-    console.log('Admin created successfully');
-  } catch (error) {
-    console.error('Error creating admin:', error);
+    const admin = new Admin({
+      firstName: "Test",
+      lastName: "Admin",
+      email: "admin@example.com",
+      password: "admin123", // Plain password; will be hashed by pre-save hook
+      role: "admin"
+    });
+
+    await admin.save(); // triggers pre('save') → hashes password
+    console.log("✅ Admin inserted with hashed password");
+  } catch (err) {
+    console.error("❌ Error inserting admin:", err.message);
   } finally {
     mongoose.connection.close();
   }
